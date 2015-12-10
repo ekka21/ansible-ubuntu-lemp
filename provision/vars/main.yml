@@ -1,0 +1,9 @@
+---
+
+common_packages:
+  - build-essential
+  - python-software-properties
+  - software-properties-common
+  - curl
+  - git
+  - htop
