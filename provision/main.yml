@@ -1,6 +1,7 @@
 ---
 
-- hosts: lemp
+- hosts: all
+  sudo: yes
   gather_facts: no
 
   vars_files:
@@ -8,8 +9,8 @@
 
   roles:
     - common
-    # - ntp
-    # - mysql
-    # - nginx
-    # - php
+    - ntp
+    - mysql
+    - nginx
+    - php
     # - deploy

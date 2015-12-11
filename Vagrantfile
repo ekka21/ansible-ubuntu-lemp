@@ -20,10 +20,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :private_network, ip: "192.168.33.34"
 
   config.vm.provision "ansible" do |ansible|
-         ansible.playbook = "provision/vagrant.yml"
-         ansible.inventory_path = "provision/hosts"
+         ansible.playbook = "provision/main.yml"
+         ansible.inventory_path = "provision/inventory/vagrant"
          ansible.sudo = true
-         ansible.limit = 'lemp'
+         ansible.limit = 'all'
    end
 
 end
