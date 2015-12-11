@@ -1,0 +1,25 @@
+listen = {{ php_listen|default('/var/run/php5-fpm.sock') }}
+listen.owner = {{ php_user }}
+listen.group = {{ php_group }}
+
+user = {{ php_user }}
+group = {{ php_group }}
+
+pm = dynamic
+
+{#
+  {{ (ansible_memtotal_mb - 200) // 50 }}
+  the // is no accident, it returns truncated integer
+  http://jinja.pocoo.org/docs/dev/templates/#math
+#}
+
+pm.max_children = {{ (ansible_memtotal_mb - 200) // 50 }}
+pm.start_servers = 7
+pm.min_spare_servers = 5
+pm.max_spare_servers = {{ (ansible_memtotal_mb - 200) // 50 }}
+pm.max_requests = 1000
+pm.status_path = /php_status
+
+request_terminate_timeout = 0
+request_slowlog_timeout = 0
+slowlog = /var/log/nginx/logs/slow.log

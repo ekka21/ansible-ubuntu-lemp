@@ -1,0 +1,13 @@
+---
+- name: Ensure NTP (for time synchronization) is installed.
+  apt: name=ntp state=installed update_cache=yes
+  notify:
+  - Start ntp
+
+- name: Copy the ntp.conf template file
+  template: src=ntp.conf dest=/etc/ntp.conf mode=644 owner=root group=root
+  notify:
+  - Restart ntp
+
+- name: Set TimeZone to US/Central
+  template: src=timezone dest=/etc/timezone mode=644 owner=root group=root

@@ -1,0 +1,49 @@
+---
+- name: Add ppa php 5.6 repository
+  apt_repository: repo='ppa:ondrej/php5-5.6' state=present
+  register: phpppainstalled
+
+- name: Install php 5.6
+  apt: name={{ item }} state=latest
+  with_items:
+    - php5-cli
+    - php5-fpm
+    - php5-mcrypt
+    - php5-imagick
+    - php5-curl
+    - php5-gd
+    - php5-mysql
+    - php5-xmlrpc
+  when: phpppainstalled|success
+  register: phpinstalled
+  notify:
+  - Restart php
+
+- name: Securing php.ini
+  when: phpinstalled|success
+  lineinfile: >
+    dest=/etc/php5/fpm/php.ini
+    state=present
+    regexp='^(|;){{ item.key }}'
+    line='{{ item.key }} = {{ item.value }}'
+  with_items:
+    - { key: 'cgi.fix_pathinfo',       value: '0'}
+    - { key: 'expose_php',             value: 'Off'}
+    - { key: 'date.timezone',          value: '"US/Central"'}
+  notify:
+    - Restart php
+
+#- name: Load php pool configuration
+#  template: src=www.conf.j2 dest=/etc/php5/fpm/pool.d/www.conf
+#  notify: Restart php
+
+- name: Install Composer
+  when: phpinstalled|success
+  register: composerinstalled
+  shell: >
+    curl -sS https://getcomposer.org/installer | php
+
+- name: Move Composer into globally-accessible location.
+  when: composerinstalled|success
+  shell: >
+    mv composer.phar /usr/local/bin/composer

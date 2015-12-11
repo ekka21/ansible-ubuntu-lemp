@@ -1,0 +1,11 @@
+---
+- name: Add ppa Nginx repository.
+  apt_repository: repo='ppa:nginx/stable' state=present
+  register: ppainstalled
+
+- name: Install Nginx
+  apt: pkg=nginx state=installed update_cache=true
+  when: ppainstalled|success
+  register: nginxinstalled
+  notify:
+  - Start Nginx

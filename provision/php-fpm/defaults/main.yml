@@ -1,0 +1,4 @@
+---
+php_listem: /var/run/php5-fpm.sock
+php_user: www-data
+php_group: www-data

@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 VAGRANTFILE_API_VERSION = "2"
+IP_ADDRESS = "192.168.33.34"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
@@ -17,7 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.hostname = "lemp"
-  config.vm.network :private_network, ip: "192.168.33.34"
+  config.vm.network :private_network, ip: IP_ADDRESS
 
   config.vm.provision "ansible" do |ansible|
          ansible.playbook = "provision/main.yml"

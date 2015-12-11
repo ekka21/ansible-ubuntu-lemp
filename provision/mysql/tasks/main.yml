@@ -1,0 +1,51 @@
+---
+- name: Install MySql
+  apt: name={{ item }} state=present
+  with_items:
+  - python-mysqldb
+  - mysql-server
+  - mysql-client
+  notify:
+  - Start mysql
+
+- name: Configure MySql
+  template:
+    src: my.cnf.j2
+    dest: /etc/mysql/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart mysql
+
+- name: Secure root password
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    password: "{{ mysql_root_password }}"
+  with_items:
+  - "{{ inventory_hostname_short }}"
+  - 127.0.0.1
+  - ::1
+  - localhost
+
+- name: Configure for easy access as root
+  template:
+    src: .my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Remove anonymous users
+  mysql_user:
+    name: ''
+    host: "{{ item }}"
+    state: absent
+  with_items:
+  - localhost
+  - "{{ inventory_hostname_short }}"
+
+- name: Remove the test database
+  mysql_db:
+    name: test
+    state: absent
