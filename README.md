@@ -1,4 +1,4 @@
-nsible LEMP Playbook
+Ansible LEMP Playbook
 This playbook creates a LEMP stack for on Vagrant, and remote servers.
 configuration.
 

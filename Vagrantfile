@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 VAGRANTFILE_API_VERSION = "2"
-IP_ADDRESS = "192.168.33.34"
+IP_ADDRESS = "192.168.33.40"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
