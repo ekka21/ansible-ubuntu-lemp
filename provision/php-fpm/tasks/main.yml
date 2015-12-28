@@ -5,7 +5,7 @@
 
 - name: Install php 5.6
   apt: name={{ item }} state=latest
-  with_items: {{ php_modules }}
+  with_items: php_modules
   when: phpppainstalled|success
   register: phpinstalled
   notify:
